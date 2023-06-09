@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Detalhes do Produto</title>
+    <style>
+        header{
+            color:white;
+            background-color: #4A5266;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #9DBBD4;
+            
+        }
+
+        .product-details {
+            max-width: 540px;
+            margin: 0 auto;
+            padding-top: 100px;
+        }
+
+        .product-image {
+            max-width: 100%;
+        }
+
+        .product-info {
+            margin-top: 20px;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .product-price {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container text-right">
+            <h1>Fake Store - TP2 DIW</h1>
+        </div>
+    </header>
+
+    <div class="product-details">
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img id="productImage" class="img-fluid rounded-start" alt="Product Image">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 id="productTitle" class="card-title"></h5>
+                        <p id="productPrice" class="card-text"></p>
+                        <p id="productDescription" class="html"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            fetch(`https://diwserver.vps.webdock.cloud/products/${productId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const productImage = document.getElementById('productImage');
+                    const productTitle = document.getElementById('productTitle');
+                    const productPrice = document.getElementById('productPrice');
+                    const productDescription = document.getElementById('productDescription');
+
+                    productImage.src = data.image;
+                    productTitle.textContent = data.title;
+                    productPrice.textContent = 'R$ ' + data.price + ',00';
+                    productDescription.innerHTML = data.description;
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
